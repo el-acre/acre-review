@@ -1,0 +1,88 @@
+<link rel="import"
+				href="../polymer/polymer.html">
+<link rel="import"
+				href="../iron-autogrow-textarea/iron-autogrow-textarea.html">
+<link rel="import"
+				href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import"
+				href="../paper-icon-button/paper-icon-button.html">
+<link rel="import"
+				href="../paper-icon-button/paper-icon-button.html">
+<link rel="import"
+				href="acre-review-box.html">
+
+<!--
+`acre-review`
+
+
+@demo demo/index.html
+-->
+
+<dom-module id="acre-submitted-review-item">
+	<template>
+		<style include="iron-flex iron-flex-alignment">
+			:host {
+				display: block;
+			}
+
+			.review-title {
+				font-size: 16px;
+			}
+
+			.review-title .author {
+				font-size: 12px;
+			}
+
+			.review-content {
+				margin-bottom: 10px;
+			}
+
+			.relevancy-container {
+				@apply(--layout-horizontal);
+				@apply(--layout-center);
+			}
+		</style>
+		<div class="review-title">[[review.title]]
+			<p class="author">Por <span>[[review.authorName]]</span> em <span>[[_formatDate(review.date)]]</span> </p>
+		</div>
+		<div class="review-content">[[review.review]]</div>
+		<div class="relevancy-container">
+			<span class="headline">Esta avaliação foi útil? </span>
+			<paper-icon-button icon="icons:thumb-up"></paper-icon-button> Sim ([[review.relevantCount]])
+			<paper-icon-button icon="icons:thumb-down"></paper-icon-button> Não ([[review.notRelevantCount]])
+		</div>
+	</template>
+
+	<script>
+		Polymer({
+
+			is: 'acre-submitted-review-item',
+
+			properties: {
+				review: {
+					type: Object,
+					value: function() {
+						return {
+
+						}
+					},
+				}
+			},
+
+			_formatDate: function(date) {
+				var today = new Date();
+				var dd = today.getDate();
+				var mm = today.getMonth() + 1; //January is 0!
+
+				var yyyy = today.getFullYear();
+				if (dd < 10) {
+					dd = '0' + dd
+				}
+				if (mm < 10) {
+					mm = '0' + mm
+				}
+				return dd + '/' + mm + '/' + yyyy;
+			}
+		});
+	</script>
+</dom-module>

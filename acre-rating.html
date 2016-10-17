@@ -1,0 +1,117 @@
+<link rel="import"
+    href="../polymer/polymer.html">
+<link rel="import"
+    href="../iron-autogrow-textarea/iron-autogrow-textarea.html">
+<link rel="import"
+    href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import"
+    href="../paper-icon-button/paper-icon-button.html">
+<link rel="import"
+    href="../paper-icon-button/paper-icon-button.html">
+<link rel="import"
+    href="acre-review-box.html">
+<link rel="import"
+    href="acre-rating-summary.html">
+<link rel="import"
+    href="acre-submitted-review-item.html">
+<link rel="import"
+    href="../paper-progress/paper-progress.html">
+
+<!--
+`acre-review`
+
+
+@demo demo/index.html
+-->
+
+<dom-module id="acre-rating">
+    <template>
+        <style include="iron-flex iron-flex-alignment">
+             :host {
+                display: block;
+            }
+
+            paper-progress {
+                width: 100%;
+                --paper-progress-active-color: var( --accent-color);
+                @apply(--loade-more-progress);
+            }
+
+            paper-icon-button.star {
+                width: 35px;
+                --iron-icon-fill-color: #ffc107;
+                --iron-icon-stroke-color: var(--paper-grey-600);
+            }
+
+            paper-icon-button.star-gray {
+                width: 35px;
+                --iron-icon-fill-color: var(--paper-grey-600);
+                --iron-icon-stroke-color: var(--paper-grey-600);
+            }
+        </style>
+
+        <div class="layout horizontal center">
+            <div class="rating-container">
+                <template is="dom-repeat"
+                    items={{_rating}}>
+                    <paper-icon-button class="star"
+                        icon="star"></paper-icon-button>
+                </template>
+                <paper-icon-button class="star"
+                    hidden$="[[!_ratingHalfStar]]"
+                    icon="star-half"></paper-icon-button>
+                <template is="dom-repeat"
+                    items={{_ratingReverse}}>
+                    <paper-icon-button class="star-gray"
+                        icon="star"></paper-icon-button>
+                </template>
+            </div>
+            <span style="font-weight:bold; margin-left:10px;">[[rating]] de 5 estrelas </span>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'acre-rating',
+
+            properties: {
+
+                rating: {
+                    type: Number,
+                    value: 4.3,
+                },
+                _rating: {
+                    type: Array,
+                    computed: '_ratingOkArray(rating)'
+                },
+                _ratingReverse: {
+                    type: Array,
+                    computed: '_ratingZeroArray(rating)'
+                },
+                _ratingHalfStar: {
+                    type: Boolean,
+                    computed: '_ratingDecimal(rating)'
+                },
+            },
+
+            _ratingOkArray: function(rating) {
+                var arr = [];
+                for (var i = 0; i < Math.floor(rating); i++) {
+                    arr.push(i);
+                }
+                return arr;
+            },
+            _ratingZeroArray: function(rating) {
+                var arr = [];
+                for (var i = 0; i < 5 - Math.ceil(rating); i++) {
+                    arr.push(i);
+                }
+                return arr;
+            },
+            _ratingDecimal: function(rating) {
+                return rating !== parseInt(rating, 10);
+            },
+        });
+    </script>
+</dom-module>

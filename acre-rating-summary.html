@@ -1,0 +1,152 @@
+<link rel="import"
+				href="../polymer/polymer.html">
+<link rel="import"
+				href="../iron-autogrow-textarea/iron-autogrow-textarea.html">
+<link rel="import"
+				href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import"
+				href="../paper-icon-button/paper-icon-button.html">
+<link rel="import"
+				href="../paper-icon-button/paper-icon-button.html">
+<link rel="import"
+				href="acre-review-box.html">
+<link rel="import"
+				href="acre-submitted-review-item.html">
+<link rel="import"
+				href="../paper-progress/paper-progress.html">
+
+<!--
+`acre-review`
+
+
+@demo demo/index.html
+-->
+
+<dom-module id="acre-rating-summary">
+	<template>
+		<style include="iron-flex iron-flex-alignment">
+			:host {
+				display: block;
+			}
+
+			.star-label {
+				width: 70px;
+			}
+
+			.review-bar-item {
+				margin: 10px 0;
+				@apply(--layout-horizontal);
+			}
+
+			.review-bar {
+				margin: 0 10px;
+				background-color: #e8e8e8;
+			}
+
+			.review-bar-fill {
+				background-color: #cc0303;
+				height: 100%;
+			}
+
+			.rating-count {
+				width: 30px;
+			}
+		</style>
+
+		<div class="review-summary">
+			<div class="review-bar-item">
+				<span class="star-label">5 estrelas</span>
+				<div class="review-bar layout flex">
+					<div class="review-bar-fill"
+									style$="[[_fiveStartStyle]]"></div>
+				</div>
+				<div class="rating-count">([[ratingCounts.fiveStars]])</div>
+			</div>
+			<div class="review-bar-item">
+				<span class="star-label">4 estrelas</span>
+				<div class="review-bar layout flex">
+					<div class="review-bar-fill"
+									style$="[[_fourStartStyle]]"></div>
+				</div>
+				<div class="rating-count">([[ratingCounts.fourStars]])</div>
+			</div>
+			<div class="review-bar-item">
+				<span class="star-label">3 estrelas</span>
+				<div class="review-bar layout flex">
+					<div class="review-bar-fill"
+									style$="[[_threeStartStyle]]"></div>
+				</div>
+				<div class="rating-count">([[ratingCounts.threeStars]])</div>
+			</div>
+			<div class="review-bar-item">
+				<span class="star-label">2 estrelas</span>
+				<div class="review-bar layout flex">
+					<div class="review-bar-fill"
+									style$="[[_twoStartStyle]]"></div>
+				</div>
+				<div class="rating-count">([[ratingCounts.twoStars]])</div>
+			</div>
+			<div class="review-bar-item">
+				<span class="star-label"> 1 estrela </span>
+				<div class="review-bar layout flex">
+					<div class="review-bar-fill"
+									style$="[[_oneStartStyle]]"></div>
+				</div>
+				<div class="rating-count">([[ratingCounts.oneStar]])</div>
+			</div>
+		</div>
+	</template>
+
+	<script>
+		Polymer({
+
+			is: 'acre-rating-summary',
+
+			properties: {
+
+				ratingCounts: {
+					type: Object,
+					value: function() {
+						return {
+              average: 0,
+							fiveStars: 0,
+							fourStars: 0,
+							threeStars: 0,
+							twoStars: 0,
+							oneStar: 0,
+						}
+					}
+				},
+			},
+
+			observers: [
+				'_ratingChanged(ratingCounts.*)'
+			],
+
+			_ratingChanged: function(e) {
+				var ratingCounts = e.value;
+				var total = ratingCounts.fiveStars +
+					ratingCounts.fourStars +
+					ratingCounts.threeStars +
+					ratingCounts.twoStars +
+					ratingCounts.oneStar;
+
+					var five = ratingCounts.fiveStars/total * 100;
+					var four = ratingCounts.fourStars/total * 100;
+					var three = ratingCounts.threeStars/total * 100;
+					var two = ratingCounts.twoStars/total * 100;
+					var one = ratingCounts.oneStar/total * 100;
+
+					this.set('_fiveStartStyle', 'width:' + five + '%');
+					this.set('_fourStartStyle', 'width:' + four + '%');
+					this.set('_threeStartStyle', 'width:' + three + '%');
+					this.set('_twoStartStyle', 'width:' + two + '%');
+					this.set('_oneStartStyle', 'width:' +one + '%');
+			},
+
+			_load_more_clicked: function(e) {
+				this.loadingMoreReviews = !this.loadingMoreReviews;
+			}
+		});
+	</script>
+</dom-module>

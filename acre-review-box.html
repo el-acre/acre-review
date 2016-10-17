@@ -1,0 +1,181 @@
+<link rel="import"
+    href="../polymer/polymer.html">
+<link rel="import"
+    href="../iron-autogrow-textarea/iron-autogrow-textarea.html">
+<link rel="import"
+    href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import"
+    href="../paper-icon-button/paper-icon-button.html">
+<link rel="import"
+    href="../iron-input/iron-input.html">
+
+<!--
+`acre-review`
+
+@demo demo/index.html
+-->
+
+<dom-module id="acre-review-box">
+    <template>
+        <style include="iron-flex iron-flex-alignment">
+             :host {
+                display: block;
+            }
+
+            .review-input {
+                max-height: 100px;
+                width: 100%;
+                @apply(--acre-review-input)
+            }
+
+            .title-input {
+                width: 100%;
+                height: 30px;
+                font-size: 16px;
+                @apply(--acre-review-title-input)
+            }
+
+            .rating-container {
+                @apply(--layout-horizontal);
+            }
+
+            paper-icon-button.star {
+                --iron-icon-fill-color: #ffc107;
+                --iron-icon-stroke-color: var(--paper-grey-600);
+            }
+
+            paper-icon-button.star-gray {
+                --iron-icon-fill-color: var(--paper-grey-600);
+                --iron-icon-stroke-color: var(--paper-grey-600);
+            }
+
+            .submit-review-button {
+                color: var(--acre-button-text-color, --light-text-color);
+                background-color: var(--acre-button-color, --default-primary-color);
+                border-color: var(--acre-button-color, --default-primary-color);
+                padding: 6px 12px;
+                margin: 0;
+                width: 100px;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 1.42857143;
+                cursor: pointer;
+                border: 1px solid transparent;
+                text-align: center;
+                border-radius: 1px;
+                @apply(--acre-submit-review-button);
+            }
+
+            .submit-review-button:hover {
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                @apply(--acre-submit-review-button-hover);
+            }
+        </style>
+        <div style="padding:0 4px 0 6px;">
+            <input class="title-input"
+                is="iron-input"
+                placeholder="[[reviewTitlePlaceholder]]"
+                value="{{title::input}}">
+        </div>
+        <div style="margin:6px">
+            <iron-autogrow-textarea class="review-input"
+                rows="4"
+                placeholder="[[reviewPlaceholder]]"
+                value="{{review}}"></iron-autogrow-textarea>
+        </div>
+        <div class="layout horizontal justified">
+            <div class="rating-container">
+                <template is="dom-repeat"
+                    items={{_rating}}>
+                    <paper-icon-button class="star"
+                        on-mouseover='_startHovered'
+                        icon="star"></paper-icon-button>
+                </template>
+                <template is="dom-repeat"
+                    on-mouseover='_startHovered'
+                    items={{_ratingReverse}}>
+                    <paper-icon-button class="star-gray"
+                        icon="star"></paper-icon-button>
+                </template>
+            </div>
+            <button class="submit-review-button"
+                on-click="_submit_button_clicked">
+                [[buttonLabel]]
+            </button>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'acre-review-box',
+
+            properties: {
+                reviewTitlePlaceholder: {
+                    type: String,
+                    value: 'Titulo da Avaliação'
+                },
+                reviewPlaceholder: {
+                    type: String,
+                    value: 'Escreva seu review aqui',
+                },
+                buttonLabel: {
+                    type: String,
+                    value: 'Enviar'
+                },
+                rating: {
+                    type: Number,
+                    value: 3,
+                },
+                review: {
+                    type: String,
+                    value: '',
+                },
+                title: {
+                    type: String,
+                    value: ''
+                },
+                _rating: {
+                    type: Array,
+                    computed: '_ratingOkArray(rating)'
+                },
+                _ratingReverse: {
+                    type: Array,
+                    computed: '_ratingZeroArray(rating)'
+                },
+            },
+
+            _ratingOkArray: function(rating) {
+                var arr = [];
+                for (var i = 0; i < Math.floor(rating); i++) {
+                    arr.push(i);
+                    console.log(1);
+                }
+                return arr;
+            },
+            _ratingZeroArray: function(rating) {
+                var arr = [];
+                for (var i = 0; i < 5 - rating; i++) {
+                    arr.push(i);
+                }
+                return arr;
+            },
+
+            _startHovered: function(e) {
+                console.log(e);
+                //TODO:
+            },
+            _submit_button_clicked: function(e) {
+                var review = {
+                    rating: this.rating,
+                    review: this.review,
+                    title: this.title
+                }
+                this.fire('acre-submit-review-click', {
+                    review: review
+                });
+                console.log(review);
+            }
+        });
+    </script>
+</dom-module>

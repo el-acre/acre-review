@@ -1,0 +1,188 @@
+<link rel="import"
+				href="../polymer/polymer.html">
+<link rel="import"
+				href="../iron-autogrow-textarea/iron-autogrow-textarea.html">
+<link rel="import"
+				href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import"
+				href="../paper-icon-button/paper-icon-button.html">
+<link rel="import"
+				href="../paper-icon-button/paper-icon-button.html">
+<link rel="import"
+				href="acre-review-box.html">
+<link rel="import"
+				href="acre-rating-summary.html">
+<link rel="import"
+				href="acre-rating.html">
+<link rel="import"
+				href="acre-submitted-review-item.html">
+<link rel="import"
+				href="../paper-progress/paper-progress.html">
+
+<!--
+`acre-review`
+
+
+@demo demo/index.html
+-->
+
+<dom-module id="acre-review">
+	<template>
+		<style include="iron-flex iron-flex-alignment">
+			:host {
+				display: block;
+			}
+
+			acre-rating-summary {
+				margin: 10px 7px;
+			}
+
+			acre-submitted-review-item {
+				margin: 15px 0;
+				border-bottom: 1px solid gray;
+			}
+
+			acre-submitted-review-item:last-of-type {
+				border: none;
+			}
+
+			.load-more-reviews-button {
+				color: var(--acre-button-text-color, --light-text-color);
+				background-color: var(--acre-button-color, --default-primary-color);
+				border-color: var(--acre-button-color, --default-primary-color);
+				padding: 6px 12px;
+				margin: 10px 0 0 0;
+				width: 100%;
+				font-size: 14px;
+				font-weight: 400;
+				line-height: 1.42857143;
+				cursor: pointer;
+				border: 1px solid transparent;
+				text-align: center;
+				border-radius: 1px;
+				@apply(--acre-load-more-reviews-button);
+			}
+
+			.load-more-reviews-button:not([disabled]):hover {
+				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+				@apply(--acre-load-more-reviews-button-hover);
+			}
+
+			.load-more-reviews-button:disabled {
+				opacity: .7;
+				@apply(--acre-load-more-reviews-button-disabled);
+			}
+
+			paper-progress {
+				width: 100%;
+				--paper-progress-active-color: var( --accent-color);
+				@apply(--loade-more-progress);
+			}
+		</style>
+
+		<acre-rating rating="[[rating]]"></acre-rating>
+
+		<acre-rating-summary rating-counts="[[ratingSummary]]"></acre-rating-summary>
+
+		<acre-review-box review-placeholder="[[reviewPlaceholder]]" style="margin-top: 30px"
+						button-label="[[submitButtonLabel]]"
+						rating="[[rating]]"></acre-review-box>
+
+		<template is="dom-repeat"
+						items="[[reviewsSubmitted]]"
+						index-as="index">
+			<acre-submitted-review-item review="[[item]]"></acre-submitted-review-item>
+		</template>
+
+		<paper-progress hidden$="[[!loadingMoreReviews]]"
+						indeterminate></paper-progress>
+		<button class="load-more-reviews-button"
+						disabled$="[[loadingMoreReviews]]"
+						on-click="_load_more_clicked">
+			[[loadMoreButtonLabel]]
+		</button>
+	</template>
+
+	<script>
+		Polymer({
+
+			is: 'acre-review',
+
+			properties: {
+
+				rating: {
+					type: Number,
+					value: 4.3,
+				},
+
+				ratingSummary: {
+					type: Object,
+					value: function() {
+						return {
+							fiveStars: 27,
+							fourStars: 3,
+							threeStars: 1,
+							twoStars: 0,
+							oneStar: 5,
+						}
+					}
+				},
+
+				reviewPlaceholder: {
+					type: String,
+					value: 'Escreva sua avaliação aqui',
+				},
+
+				submitButtonLabel: {
+					type: String,
+					value: 'Enviar'
+				},
+
+				loadMoreButtonLabel: {
+					type: String,
+					value: 'Carregar mais'
+				},
+
+				loadingMoreReviews: {
+					type: Boolean,
+					value: false
+				},
+
+				reviewsSubmitted: {
+					type: Array,
+					value: function() {
+						return [{
+							rating: 3,
+							title: 'Cacilds',
+							review: 'Mussum Ipsum, cacilds vidis litro abertis. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Manduma pindureta quium dia nois paga. Ta deprimidis, eu conheço uma cachacis que pode alegrar sua vidis.” Si num tem leite então bota uma pinga aí cumpadi!',
+							authorName: 'Mussum',
+							date: new Date(),
+							relevantCount: 5,
+							notRelevantCount: 1,
+						}, {
+							rating: 3,
+							title: 'Oi Internautas',
+							review: 'Primeiro eu queria cumprimentar os internautas. -Oi Internautas! Depois dizer que o meio ambiente é sem dúvida nenhuma uma ameaça ao desenvolvimento sustentável. E isso significa que é uma ameaça pro futuro do nosso planeta e dos nossos países. O desemprego beira 20%, ou seja, 1 em cada 4 portugueses.',
+							authorName: 'Dilma',
+							date: new Date(),
+							relevantCount: 5,
+							notRelevantCount: 1,
+						}, {
+							rating: 3,
+							title: 'Modafoca',
+							review: 'You think water moves fast? You should see ice. It moves like it has a mind. Like it knows it killed the world once and got a taste for murder. After the avalanche, it took us a week to climb out. Now, ',
+							authorName: 'Samuel L Jackson',
+							date: new Date(),
+							relevantCount: 5,
+							notRelevantCount: 1,
+						}]
+					}
+				}
+			},
+
+			_load_more_clicked: function(e) {
+				this.loadingMoreReviews = !this.loadingMoreReviews;
+			}
+		});
+	</script>
+</dom-module>
