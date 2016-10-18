@@ -6,7 +6,8 @@
 				href="../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import"
 				href="../paper-button/paper-button.html">
-
+<link rel="import"
+				href="acre-review-styles.html">
 <!--
 `acre-submitted-review-item`
 
@@ -35,7 +36,7 @@ Custom property | Description | Default
 -->
 <dom-module id="acre-submitted-review-item">
 	<template>
-		<style include="iron-flex iron-flex-alignment">
+		<style include="iron-flex iron-flex-alignment acre-review-styles">
 			:host {
 				display: block;
 			}
@@ -70,8 +71,8 @@ Custom property | Description | Default
 				@apply(--layout-center);
 			}
 
-			paper-button{
-				text-transform: none;;
+			paper-button {
+				text-transform: none;
 			}
 
 			.thumb-up {
@@ -93,13 +94,21 @@ Custom property | Description | Default
 			<span class="headline">Esta avaliação foi útil? </span>
 			<paper-button on-click="_thumb_up_clicked">
 				<iron-icon class="thumb-up"
-								icon="icons:thumb-up"></iron-icon>
-					Sim ([[review.relevantCount]])
+								icon="icons:thumb-up"
+								hidden$="[[review.isRelevant]]"></iron-icon>
+				<iron-icon class="thumb-up"
+								icon="icons:clear"
+								hidden$="[[!review.isRelevant]]"></iron-icon>
+				Sim ([[review.relevantCount]])
 			</paper-button>
 			<paper-button on-click="_thumb_down_clicked">
 				<iron-icon class="thumb-down"
-								icon="icons:thumb-down"></iron-icon>
-					Não ([[review.notRelevantCount]])
+								icon="icons:thumb-down"
+								hidden$="[[_hideThumbDown]]"></iron-icon>
+				<iron-icon class="thumb-down"
+								icon="icons:clear"
+								hidden$="[[_hideThumbDownClear]]"></iron-icon>
+				Não ([[review.notRelevantCount]])
 			</paper-button>
 		</div>
 	</template>
@@ -119,10 +128,27 @@ Custom property | Description | Default
 							date: "",
 							review: "",
 							relevantCount: 0,
-							notRelevantCount: 0
+							notRelevantCount: 0,
+							isRelevant: null
 						}
 					},
+				},
+				_hideThumbDown: {
+					type: Boolean,
+					computed: '_computeHideThumbDown(review.isRelevant)'
+				},
+				_hideThumbDownClear: {
+					type: Boolean,
+					computed: '_computeHideThumbDownClear(review.isRelevant)'
 				}
+			},
+
+			_computeHideThumbDown: function(isRelevant) {
+				return isRelevant === false;
+			},
+
+			_computeHideThumbDownClear: function(isRelevant) {
+				return isRelevant === null || isRelevant === undefined || isRelevant === true;
 			},
 
 			/**
@@ -133,7 +159,8 @@ Custom property | Description | Default
 			 */
 			_thumb_up_clicked: function(e) {
 				this.fire('acre-review-item-thumb-up-clicked', {
-					review: this.review
+					review: this.review,
+					item: this,
 				});
 			},
 
@@ -144,7 +171,7 @@ Custom property | Description | Default
 			 * @detail {{review: Review}}
 			 */
 			_thumb_down_clicked: function(e) {
-				this.fire('acre-review-item-thumb-up-clicked', {
+				this.fire('acre-review-item-thumb-down-clicked', {
 					review: this.review
 				});
 			},
@@ -162,7 +189,7 @@ Custom property | Description | Default
 					mm = '0' + mm
 				}
 				return dd + '/' + mm + '/' + yyyy;
-			}
+			},
 		});
 	</script>
 </dom-module>

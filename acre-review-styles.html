@@ -1,28 +1,33 @@
 <dom-module id="acre-review-styles">
-    <template>
-        <style>
-            .pointer-cursor {
-                cursor: pointer;
-            }
+  <template>
+    <style>
+      [hidden] {
+        display: none!important;
+      }
+      
+      .pointer-cursor {
+        cursor: pointer;
+      }
 
-            .default-cursor {
-                cursor: default;
-            }
+      .default-cursor {
+        cursor: default;
+      }
 
-            iron-icon.star, paper-icon-button.star {
-                --iron-icon-width: 16px;
-                --iron-icon-height: 16px;
-                color: var(--acre-selected-star-color, #ffc107);
-                @apply(--acre-selected-star);
-            }
+      iron-icon.star,
+      paper-icon-button.star {
+        --iron-icon-width: 16px;
+        --iron-icon-height: 16px;
+        color: var(--acre-selected-star-color, #ffc107);
+        @apply(--acre-selected-star);
+      }
 
-            iron-icon.star-gray, paper-icon-button.star-gray {
-                --iron-icon-width: 16px;
-                --iron-icon-height: 16px;
-                color: var(--acre-unselected-star-color, gray);
-                @apply(--acre-unselected-star);
-            }
-
-        </style>
-    </template>
+      iron-icon.star-gray,
+      paper-icon-button.star-gray {
+        --iron-icon-width: 16px;
+        --iron-icon-height: 16px;
+        color: var(--acre-unselected-star-color, gray);
+        @apply(--acre-unselected-star);
+      }
+    </style>
+  </template>
 </dom-module>
