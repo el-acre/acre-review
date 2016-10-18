@@ -48,6 +48,7 @@ Custom property | Description | Default
 
 			.review-subtitle {
 				font-size: 12px;
+				margin: 15px 0;
 				@apply(--acre-review-item-subtitle);
 			}
 
@@ -75,6 +76,12 @@ Custom property | Description | Default
 				text-transform: none;
 			}
 
+			paper-icon-button {
+				width: 15px;
+				height: 15px;
+				padding: 0;
+			}
+
 			.thumb-up {
 				margin-right: 10px;
 				color: var(--acre-review-thumb-up-color, gray);
@@ -88,7 +95,21 @@ Custom property | Description | Default
 			}
 		</style>
 		<p class="review-title">[[review.title]]</p>
-		<p class="review-subtitle">Por <span class="author">[[review.authorName]]</span> em <span class="date">[[_formatDate(review.date)]]</span></p>
+		<div class="review-subtitle layout horizontal center">
+			<template is="dom-repeat"
+							items={{_rating}}>
+				<paper-icon-button class="star"
+								noink
+								icon="star"></paper-icon-button>
+			</template>
+			<template is="dom-repeat"
+							items={{_ratingReverse}}>
+				<paper-icon-button class="star-gray"
+								noink
+								icon="star"></paper-icon-button>
+			</template>
+			<span style="margin-left: 10px">Por <span class="author">[[review.authorName]]</span> em <span class="date">[[_formatDate(review.date)]]</span></span>
+		</div>
 		<div class="review-content">[[review.review]]</div>
 		<div class="relevancy-container">
 			<span class="headline">Esta avaliação foi útil? </span>
@@ -140,7 +161,30 @@ Custom property | Description | Default
 				_hideThumbDownClear: {
 					type: Boolean,
 					computed: '_computeHideThumbDownClear(review.isRelevant)'
+				},
+				_rating: {
+					type: Array,
+					computed: '_ratingOkArray(review.rating)'
+				},
+				_ratingReverse: {
+					type: Array,
+					computed: '_ratingZeroArray(review.rating)'
+				},
+			},
+
+			_ratingOkArray: function(rating) {
+				var arr = [];
+				for (var i = 0; i < Math.floor(rating); i++) {
+					arr.push(i);
 				}
+				return arr;
+			},
+			_ratingZeroArray: function(rating) {
+				var arr = [];
+				for (var i = 0; i < 5 - rating; i++) {
+					arr.push(i);
+				}
+				return arr;
 			},
 
 			_computeHideThumbDown: function(isRelevant) {
