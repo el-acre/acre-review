@@ -5,19 +5,34 @@
 <link rel="import"
 				href="../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import"
-				href="../paper-icon-button/paper-icon-button.html">
-<link rel="import"
-				href="../paper-icon-button/paper-icon-button.html">
-<link rel="import"
-				href="acre-review-box.html">
+				href="../paper-button/paper-button.html">
 
 <!--
-`acre-review`
+`acre-submitted-review-item`
 
+Example:`
 
-@demo demo/index.html
+    <acre-submitted-review-item></acre-submitted-review-item>
+
+### Styling
+
+The following custom properties and mixins are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--acre-review-item-title` | Mixin applied to the review title | `{}`
+`---acre-review-item-subtitle` | Mixin applied to the review subtitle | `{}`
+`--acre-review-item-author` | Mixin applied to the review author name | `{}`
+`---acre-review-item-date` | Mixin applied to the review date | `{}`
+`--acre-review-item-content` | Mixin applied to the review content | `{}`
+`--acre-review-thumb-up-color` | The review thumb up color | `gray`
+`--acre-review-thumb-up` | The review thumb up color | `gray`
+`--acre-review-thumb-down-color` | The review thumb up color | `gray`
+
+@demo demo/submitted-review-item.html
+@hero hero.svg
+
 -->
-
 <dom-module id="acre-submitted-review-item">
 	<template>
 		<style include="iron-flex iron-flex-alignment">
@@ -27,29 +42,65 @@
 
 			.review-title {
 				font-size: 16px;
+				@apply(--acre-review-item-title);
 			}
 
-			.review-title .author {
+			.review-subtitle {
 				font-size: 12px;
+				@apply(--acre-review-item-subtitle);
+			}
+
+			.review-subtitle .author {
+				font-size: 12px;
+				@apply(--acre-review-item-author);
+			}
+
+			.review-subtitle .date {
+				font-size: 12px;
+				@apply(--acre-review-item-date);
 			}
 
 			.review-content {
 				margin-bottom: 10px;
+				@apply(--acre-review-item-content);
 			}
 
 			.relevancy-container {
 				@apply(--layout-horizontal);
 				@apply(--layout-center);
 			}
+
+			paper-button{
+				text-transform: none;;
+			}
+
+			.thumb-up {
+				margin-right: 10px;
+				color: var(--acre-review-thumb-up-color, gray);
+				@apply(--acre-review-thumb-up);
+			}
+
+			.thumb-down {
+				margin-right: 10px;
+				color: var(--acre-review-thumb-down-color, gray);
+				@apply(--acre-review-thumb-down);
+			}
 		</style>
-		<div class="review-title">[[review.title]]
-			<p class="author">Por <span>[[review.authorName]]</span> em <span>[[_formatDate(review.date)]]</span> </p>
-		</div>
+		<p class="review-title">[[review.title]]</p>
+		<p class="review-subtitle">Por <span class="author">[[review.authorName]]</span> em <span class="date">[[_formatDate(review.date)]]</span></p>
 		<div class="review-content">[[review.review]]</div>
 		<div class="relevancy-container">
 			<span class="headline">Esta avaliação foi útil? </span>
-			<paper-icon-button icon="icons:thumb-up"></paper-icon-button> Sim ([[review.relevantCount]])
-			<paper-icon-button icon="icons:thumb-down"></paper-icon-button> Não ([[review.notRelevantCount]])
+			<paper-button on-click="_thumb_up_clicked">
+				<iron-icon class="thumb-up"
+								icon="icons:thumb-up"></iron-icon>
+					Sim ([[review.relevantCount]])
+			</paper-button>
+			<paper-button on-click="_thumb_down_clicked">
+				<iron-icon class="thumb-down"
+								icon="icons:thumb-down"></iron-icon>
+					Não ([[review.notRelevantCount]])
+			</paper-button>
 		</div>
 	</template>
 
@@ -63,10 +114,39 @@
 					type: Object,
 					value: function() {
 						return {
-
+							title: "",
+							authorName: "",
+							date: "",
+							review: "",
+							relevantCount: 0,
+							notRelevantCount: 0
 						}
 					},
 				}
+			},
+
+			/**
+			 * The `acre-review-item-thumb-up-clicked` event is fired whenever the thumb up button is pressed
+			 *
+			 * @event acre-review-item-thumb-up-clicked
+			 * @detail {{review: Review}}
+			 */
+			_thumb_up_clicked: function(e) {
+				this.fire('acre-review-item-thumb-up-clicked', {
+					review: this.review
+				});
+			},
+
+			/**
+			 * The `acre-review-item-thumb-down-clicked` event is fired whenever the thumb down button is pressed
+			 *
+			 * @event acre-review-item-thumb-down-clicked
+			 * @detail {{review: Review}}
+			 */
+			_thumb_down_clicked: function(e) {
+				this.fire('acre-review-item-thumb-up-clicked', {
+					review: this.review
+				});
 			},
 
 			_formatDate: function(date) {

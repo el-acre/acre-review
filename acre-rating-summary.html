@@ -8,18 +8,25 @@
 				href="../paper-icon-button/paper-icon-button.html">
 <link rel="import"
 				href="../paper-icon-button/paper-icon-button.html">
-<link rel="import"
-				href="acre-review-box.html">
-<link rel="import"
-				href="acre-submitted-review-item.html">
-<link rel="import"
-				href="../paper-progress/paper-progress.html">
 
 <!--
-`acre-review`
+`acre-rating-summary`
 
+Example:`
 
-@demo demo/index.html
+    <acre-rating-summary></acre-rating-summary>
+
+### Styling
+
+The following custom properties and mixins are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`----acre-rating-bar-fill-color` | The selected star color | `#cc0303`
+
+@demo demo/rating-summary.html
+@hero hero.svg
+
 -->
 
 <dom-module id="acre-rating-summary">
@@ -44,7 +51,7 @@
 			}
 
 			.review-bar-fill {
-				background-color: #cc0303;
+				background-color: var(--acre-rating-bar-fill-color, #cc0303);
 				height: 100%;
 			}
 
@@ -108,7 +115,7 @@
 					type: Object,
 					value: function() {
 						return {
-              average: 0,
+							average: 0,
 							fiveStars: 0,
 							fourStars: 0,
 							threeStars: 0,
@@ -131,22 +138,18 @@
 					ratingCounts.twoStars +
 					ratingCounts.oneStar;
 
-					var five = ratingCounts.fiveStars/total * 100;
-					var four = ratingCounts.fourStars/total * 100;
-					var three = ratingCounts.threeStars/total * 100;
-					var two = ratingCounts.twoStars/total * 100;
-					var one = ratingCounts.oneStar/total * 100;
+				var five = ratingCounts.fiveStars / total * 100;
+				var four = ratingCounts.fourStars / total * 100;
+				var three = ratingCounts.threeStars / total * 100;
+				var two = ratingCounts.twoStars / total * 100;
+				var one = ratingCounts.oneStar / total * 100;
 
-					this.set('_fiveStartStyle', 'width:' + five + '%');
-					this.set('_fourStartStyle', 'width:' + four + '%');
-					this.set('_threeStartStyle', 'width:' + three + '%');
-					this.set('_twoStartStyle', 'width:' + two + '%');
-					this.set('_oneStartStyle', 'width:' +one + '%');
+				this.set('_fiveStartStyle', 'width:' + five + '%');
+				this.set('_fourStartStyle', 'width:' + four + '%');
+				this.set('_threeStartStyle', 'width:' + three + '%');
+				this.set('_twoStartStyle', 'width:' + two + '%');
+				this.set('_oneStartStyle', 'width:' + one + '%');
 			},
-
-			_load_more_clicked: function(e) {
-				this.loadingMoreReviews = !this.loadingMoreReviews;
-			}
 		});
 	</script>
 </dom-module>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+
+  <head>
+    <title>acre-review demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import"
+        href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import"
+        href="../../iron-demo-helpers/demo-snippet.html">
+
+    <link rel="import"
+        href="../acre-review-input-box.html">
+
+    <style is="custom-style"
+        include="demo-pages-shared-styles">
+
+    </style>
+  </head>
+
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic acre-rating Demo</h3>
+      <demo-snippet>
+        <template>
+          <style is="custom-style">
+             :root {
+              --acre-button-text-color: white;
+              --acre-button-color: red;
+            }
+          </style>
+          <acre-review-input-box></acre-review-input-box>
+
+          <script type="text/javascript">
+            var reviewInput = document.querySelector('acre-review-input-box');
+            reviewInput.addEventListener("acre-submit-review-click", function(e) {
+              console.log(e.detail.review);
+              reviewInput.clear();
+            });
+          </script>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+
+</html>

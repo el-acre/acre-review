@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+
+  <head>
+    <title>acre-review demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import"
+        href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import"
+        href="../../iron-demo-helpers/demo-snippet.html">
+
+    <link rel="import"
+        href="../acre-submitted-review-item.html">
+
+    <style is="custom-style"
+        include="demo-pages-shared-styles">
+
+    </style>
+  </head>
+
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic acre-rating Demo</h3>
+      <demo-snippet>
+        <template>
+          <style is="custom-style">
+             :root {
+              --acre-review-item-title: {
+                color: red;
+                font-weight: 500;
+              }
+              --acre-review-thumb-up-color: green;
+              --acre-review-thumb-down-color: red;
+            }
+          </style>
+          <acre-submitted-review-item review='{
+                "rating": 3,
+                "title": "Cacilds",
+                "review": "Mussum Ipsum, cacilds vidis litro abertis. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Manduma pindureta quium dia nois paga. Ta deprimidis, eu conheço uma cachacis que pode alegrar sua vidis.” Si num tem leite então bota uma pinga aí cumpadi!",
+                "authorName": "Mussum",
+                "date": "Tue Oct 18 2016 12:04:06 GMT-0200 (E. South America Daylight Time)",
+                "relevantCount": 5,
+                "notRelevantCount": 1
+              }'>
+          </acre-submitted-review-item>
+          <script type="text/javascript">
+            document.querySelector('acre-submitted-review-item').addEventListener("acre-review-item-thumb-up-clicked", function(e) {
+              console.log('up');
+              console.log(e.detail.review);
+            });
+            document.querySelector('acre-submitted-review-item').addEventListener("acre-review-item-thumb-down-clicked", function(e) {
+              console.log('down');
+              console.log(e.detail.review);
+            });
+          </script>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+
+</html>

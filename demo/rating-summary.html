@@ -10,7 +10,7 @@
 	<link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
 	<link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 
-	<link rel="import" href="../acre-review.html">
+	<link rel="import" href="../acre-rating-summary.html">
 
 	<style is="custom-style" include="demo-pages-shared-styles">
 
@@ -22,8 +22,33 @@
 		<h3>Basic acre-rating Demo</h3>
 		<demo-snippet>
 			<template>
-				<acre-review>
-				</acre-review>
+				<acre-rating-summary rating-counts='{
+						"fiveStars": 10,
+						"fourStars": 8,
+						"threeStars": 2,
+						"twoStars": 0,
+						"oneStar": 1
+					}'>
+				</acre-rating-summary>
+			</template>
+		</demo-snippet>
+		<h3>Red acre-ratgin Demo</h3>
+		<demo-snippet>
+			<template>
+				<style is="custom-style">
+					.yellow-bar {
+						--acre-rating-bar-fill-color: #ffc107;
+					}
+				</style>
+				<acre-rating-summary class="yellow-bar"
+					rating-counts='{
+						"fiveStars": 1,
+						"fourStars": 1,
+						"threeStars": 7,
+						"twoStars": 8,
+						"oneStar": 10
+					}'>
+				</acre-rating-summary>
 			</template>
 		</demo-snippet>
 	</div>
