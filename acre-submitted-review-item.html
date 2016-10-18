@@ -110,7 +110,7 @@ Custom property | Description | Default
 			</template>
 			<span style="margin-left: 10px">Por <span class="author">[[review.authorName]]</span> em <span class="date">[[_formatDate(review.date)]]</span></span>
 		</div>
-		<div class="review-content">[[review.review]]</div>
+		<div class="review-content">[[review.text]]</div>
 		<div class="relevancy-container">
 			<span class="headline">Esta avaliação foi útil? </span>
 			<paper-button on-click="_thumb_up_clicked">
@@ -147,7 +147,7 @@ Custom property | Description | Default
 							title: "",
 							authorName: "",
 							date: "",
-							review: "",
+							text: "",
 							relevantCount: 0,
 							notRelevantCount: 0,
 							isRelevant: null
