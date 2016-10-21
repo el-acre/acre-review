@@ -83,13 +83,13 @@
 						var review = document.querySelector('acre-review');
 						review.addEventListener("acre-submit-review-click", function(e) {
 							/*SAVE THE NEW REVIEW*/
-							review.clearInput();
 							var newReview = e.detail.review;
 							newReview.authorName = "V8";
 							newReview.date = new Date();
 							newReview.relevantCount = 0;
 							newReview.notRelevantCount = 0;
 							review.unshiftReview(newReview);
+							review.clearInput();
 						});
 						review.addEventListener("acre-load-more-reviews-click", function(e) {
 							review.loadingMoreReviews = true;

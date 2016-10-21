@@ -84,13 +84,13 @@ Custom property | Description | Default
       <input class="title-input"
           is="iron-input"
           placeholder="[[reviewTitlePlaceholder]]"
-          value="{{title::input}}">
+          value="{{review.title::input}}">
     </div>
     <div style="margin:6px">
       <iron-autogrow-textarea class="review-input"
           rows="4"
           placeholder="[[reviewPlaceholder]]"
-          value="{{text}}"></iron-autogrow-textarea>
+          value="{{review.text}}"></iron-autogrow-textarea>
     </div>
     <div class="layout horizontal justified">
       <div class="rating-container">
@@ -133,25 +133,24 @@ Custom property | Description | Default
           type: String,
           value: 'Enviar'
         },
-        rating: {
-          type: Number,
-          value: 0,
-        },
-        text: {
-          type: String,
-          value: '',
-        },
-        title: {
-          type: String,
-          value: ''
+        review: {
+          type: Object,
+          value: function() {
+            return {
+              title: '',
+              text: '',
+              rating: 0
+            }
+          },
+          notify: true
         },
         _rating: {
           type: Array,
-          computed: '_ratingOkArray(rating)'
+          computed: '_ratingOkArray(review.rating)'
         },
         _ratingReverse: {
           type: Array,
-          computed: '_ratingZeroArray(rating)'
+          computed: '_ratingZeroArray(review.rating)'
         },
       },
 
@@ -171,11 +170,11 @@ Custom property | Description | Default
       },
 
       _selectedStarClicked: function(e) {
-        this.rating = e.model.item + 1;
+        this.set('review.rating', e.model.item + 1);
       },
 
       _unselectedStarClicked: function(e) {
-        this.rating = this.rating + e.model.item + 1;
+        this.set('review.rating', this.review.rating + e.model.item + 1);
       },
 
       /**
@@ -185,21 +184,19 @@ Custom property | Description | Default
        * @detail {{review: Review}}
        */
       _submit_button_clicked: function(e) {
-        var review = {
-          rating: this.rating,
-          review: this.review,
-          title: this.title
-        }
         this.fire('acre-submit-review-click', {
-          review: review
+          review: {
+            title: this.review.title,
+            text: this.review.text,
+            rating: this.review.rating,
+          }
         });
       },
 
       clear: function() {
-        this.title = "";
-        this.review = "";
-        this.rating = 0;
-
+        this.set('review.title', "");
+        this.set('review.text', "");
+        this.set('review.rating', 0);
       },
     });
   </script>
