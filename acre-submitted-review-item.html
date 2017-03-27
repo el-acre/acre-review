@@ -108,7 +108,7 @@ Custom property | Description | Default
 								noink
 								icon="star"></paper-icon-button>
 			</template>
-			<span style="margin-left: 10px">Por <span class="author">[[review.authorName]]</span> em <span class="date">[[_formatDate(review.date)]]</span></span>
+			<span style="margin-left: 10px">Por <span class="author">[[review.authorName]]</span> em <span class="date">[[_formatDate(review.dateCreated)]]</span></span>
 		</div>
 		<div class="review-content">[[review.text]]</div>
 		<div class="relevancy-container">
@@ -220,18 +220,18 @@ Custom property | Description | Default
 				});
 			},
 
-			_formatDate: function(date) {
-				var today = new Date();
-				var dd = today.getDate();
-				var mm = today.getMonth() + 1; //January is 0!
+      _formatDate: function (date) {
+        date = new Date(date);
+        var dd = date.getDate();
+        var mm = date.getMonth() + 1; //January is 0!
 
-				var yyyy = today.getFullYear();
+        var yyyy = date.getFullYear();
 				if (dd < 10) {
 					dd = '0' + dd
 				}
 				if (mm < 10) {
 					mm = '0' + mm
-				}
+        }
 				return dd + '/' + mm + '/' + yyyy;
 			},
 		});
